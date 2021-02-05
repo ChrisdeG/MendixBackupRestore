@@ -1,0 +1,24 @@
+
+
+Version:	3.12
+CmdLine:	C:\Users\Chris de Gelder\Documents\GitHub\BackupRestoreTool\src\out\MendixBackupRestoreTool.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Chris de Gelder\Documents\GitHub\BackupRestoreTool\src\out\.
+Java min ver:	1.007.000
+Java max ver:	
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+32-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Check launcher:	C:\Program Files\Java\jdk1.8.0_144\bin\javaw.exe (OK)
+Match:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_144
+Check launcher:	C:\Program Files\Java\jdk1.8.0_144\bin\javaw.exe (OK)
+Match:		1.008.000_144
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+Runtime used:	1.008.000_144 (64-bit)
+Launcher:	C:\Program Files\Java\jdk1.8.0_144\bin\javaw.exe
+Launcher args:	-jar "C:\Users\Chris de Gelder\Documents\GitHub\BackupRestoreTool\src\out\MendixBackupRestoreTool.exe"
+Args length:	102/32768 chars
+Exit code:	0

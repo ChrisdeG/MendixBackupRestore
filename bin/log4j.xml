@@ -1,0 +1,10 @@
+<Configuration packages="com">
+  <Appenders>
+    <MyRollingFileAppender name="ABC"></MyRollingFileAppender>
+  </Appenders>
+  <Loggers>
+  	<Root>
+  		<AppenderRef ref="ABC" />
+  	</Root>
+  </Loggers>
+</Configuration>
