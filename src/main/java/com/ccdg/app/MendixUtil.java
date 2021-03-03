@@ -19,10 +19,15 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -73,11 +78,12 @@ public class MendixUtil {
 	private static final String MENDIX_USER_NAME = "Mendix-UserName";
 	private static final String DBPASSWORD = "password";
 	private static final String DBUSERNAME = "username";
-	private static final String PGDIR = "PGDIR"; // postgres directory
-	private static final String PGPORT = "PGPORT"; // postgres port
-	private static final String DLDIR = "DOWNLOADDIR";
+	private static final String PGDIR = "pgdir"; // postgres directory
+	private static final String PGPORT = "pgport"; // postgres port
+	private static final String DLDIR = "donwnloaddir";
 	private static final String MXAPIUSER = "mxapiuser";
 	private static final String BACKUPNAMING = "backupnaming";
+	private static final String SIZEPREFIX = "lastdownloadsize_";
 	private static final String MRUPREFIX = "mru";
 	private static final String APP_ID = "AppId";
 	// symmetric key for storage
@@ -208,7 +214,7 @@ public class MendixUtil {
 	 * @param list SWT List of applications  
 	 */
 	public void restorePreferences(List list, String filter) {
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 
 		// second parameter is default value
 		apiuser = prefs.get(MXAPIUSER, ""); 
@@ -319,7 +325,7 @@ public class MendixUtil {
 		this.postgresDirectory = postgresDirectory;
 		this.postgresPort = postgresPort;
 		this.downloadDirectory = downloadDirectory;
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 
 		prefs.put(MXAPIUSER, apiUser);
 		prefs.put(DBUSERNAME, userName);
@@ -340,7 +346,7 @@ public class MendixUtil {
 	 * @param backupNaming string with tokens {environment} and {date}
 	 */
 	public void setBackupNaming(String backupNaming) {
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 		this.backupNaming = backupNaming;
 		prefs.put(BACKUPNAMING, backupNaming);
 	}
@@ -377,10 +383,9 @@ public class MendixUtil {
 	 * @param createdOn		Date of the backup
 	 * @return	Unique databasename
 	 */
-	public String getTargetDatabaseName(String appid, String environment, Long createdOn) {
-		Date date = new Date(createdOn);  
+	public String getTargetDatabaseName(String appid, String environment, Date createdOn) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
-		String strDate= formatter.format(date);  
+		String strDate= formatter.format(createdOn);  
 		String dbName = appid + backupNaming.replace("{environment}", environment).replace("{date}", strDate);
 		String ext = getNonExistingDatabaseExt(dbName);
 		return dbName + ext;
@@ -599,8 +604,9 @@ public class MendixUtil {
 	 *  
 	 * @param selectionCount selected line of list
 	 * @param environment selected environment (production, acceptance, test)
+	 * return true is list has at least one item.
 	 */
-	public void GetBackupList(int selectionCount, String environment ) {
+	public boolean GetBackupList(int selectionCount, String environment ) {
 		if (selectionCount >= 0) {
 			int appIndex = AppIndexByListIndex(selectionCount);
 			String appid = apps.getJSONObject(appIndex).getString(APP_ID);
@@ -621,23 +627,27 @@ public class MendixUtil {
 					consoleWrite(result);
 					this.backups = new JSONArray(result);	
 					SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 					for (int i = 0; i < backups.length(); i++) {
 						// if a backup is being created createdon is null
 						if (!backups.getJSONObject(i).isNull(CREATED_ON)) {
-							backuplist.add(dt1.format(new Date(backups.getJSONObject(i).getLong(CREATED_ON))));
+							backuplist.add(dt1.format(parser.parse(backups.getJSONObject(i).getString(CREATED_ON))));
 						}
 					}
+					return backups.length() > 0;
 				} else {
 					consoleWrite("Error getting backuplist");
 					consoleWrite(result);
+					return false;
 				}
 			} catch (Exception e) {
 				consoleWrite("Error getting list " + e.getMessage());
 				e.printStackTrace();
 			}
+		} else {
+			return false;
 		}
-
-
+		return false;
 	}
 	/**
 	 * Retrieve the backup link of the OnlyDatabase from the json and download the file into downloads
@@ -664,13 +674,13 @@ public class MendixUtil {
 				if (apps != null) {
 					String appid = "";
 					String backupid = "";
-					Long createdOn = 0L;
+					Date createdOn = null;
 					try {
 						appid = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString(APP_ID);
 						backupid = backups.getJSONObject(selectedBackupIndex).getString(SNAPSHOT_ID);
 						// if a backup is being created createdon is null
 						if (!backups.getJSONObject(selectedBackupIndex).isNull(CREATED_ON)) {
-							createdOn = backups.getJSONObject(selectedBackupIndex).getLong(CREATED_ON);
+							createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
 						}
 					} catch (Exception exp) {
 						consoleWrite("Error getting list " + exp.getMessage());
@@ -710,8 +720,7 @@ public class MendixUtil {
 						String dbFilename = filename;
 						String extractDirectory = null;
 						if (includeDocuments) {
-							// todo extract dir terugkrijgen
-							// files verplaatsen naar doel documenten directory
+							// todo get extract dir - move file to target directory 
 							extractDirectory = extractTarGz(filename);
 							dbFilename = extractDirectory + File.separator +"db" + File.separator + "db.backup";
 						}
@@ -855,10 +864,10 @@ public class MendixUtil {
 				if (apps != null) {
 					String appid = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString(APP_ID);
 					String backupid = backups.getJSONObject(selectedBackupIndex).getString(SNAPSHOT_ID);
-					Long createdOn = 0l;
+					Date createdOn = null;
 					// if a backup is being created createdon is null
 					if (!backups.getJSONObject(selectedBackupIndex).isNull(CREATED_ON)) {
-						createdOn = backups.getJSONObject(selectedBackupIndex).getLong(CREATED_ON);
+						createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
 					}					
 					OkHttpClient client = getClient(60);
 
@@ -987,7 +996,7 @@ public class MendixUtil {
 	 * 
 	 * @param message	Message to write
 	 */
-	private void consoleWrite(String message) {
+	void consoleWrite(String message) {
 		display.asyncExec (new Runnable () {
 			public void run () {
 				if (consoleList != null && message != null) {
@@ -1109,7 +1118,7 @@ public class MendixUtil {
 		URL url;
 		try {
 			url = new URL(fileURL);
-			Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+			Preferences prefs = getPreferences();
 			HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 			int responseCode = httpConn.getResponseCode();
 
@@ -1163,7 +1172,7 @@ public class MendixUtil {
 							}
 						}
 						// store for next time progress bar
-						prefs.putLong(appid+ext, totalbytesRead);
+						prefs.putLong(SIZEPREFIX+appid+ext, totalbytesRead);
 					} catch (IOException e) {
 						consoleWrite("Error " + e.getMessage());
 						e.printStackTrace();
@@ -1288,7 +1297,7 @@ public class MendixUtil {
 	 */
 
 	public String[] getMRUItems() {
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 
 		ArrayList<String> mrulist = new ArrayList<String>();
 		for (int i = 0; i<MAX_MRU; i++) {
@@ -1302,13 +1311,21 @@ public class MendixUtil {
 		}
 		return mrulist.toArray(new String[mrulist.size()]);
 	}
+
+	/**
+	 * Get the preferences storage
+	 * @return Preferences
+	 */
+	private Preferences getPreferences() {
+		return Preferences.userNodeForPackage(MendixUtil.class);
+	}
 	/**
 	 * Add an app to the MRU list, max 6 items. Latest item is not put on top.
 	 * @param appindex index of application
 	 */
 
 	public void addMRU(int appindex) {
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 
 		// shift them up.
 		for (int i=MAX_MRU; i>=0; i--) {
@@ -1321,12 +1338,30 @@ public class MendixUtil {
 	 */
 
 	public void clearMRU() {
-		Preferences prefs = Preferences.userNodeForPackage(MendixUtil.class);
+		Preferences prefs = getPreferences();
 		for (int i = MAX_MRU; i>=0; i--) {
 			prefs.putInt(MRUPREFIX+i, -1);
 		}
-
 	}
+	
+	/**
+	 * Parse the XML date from JSON
+	 * Returns Date
+	 */
 
+	public java.util.Date parseJSONDate(String jsonDate) {
+		if (jsonDate != null && !jsonDate.isEmpty()) {
+			try {
+				SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+				return parser.parse(jsonDate);
+			} catch (Exception e) {
+				consoleWrite("Error parsing date " + jsonDate);
+				return null;
+			}
+		} else {
+			return null;
+		}
+		
+	}
 
 }

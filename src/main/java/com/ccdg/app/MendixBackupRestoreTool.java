@@ -76,7 +76,7 @@ public class MendixBackupRestoreTool {
 		shell = new Shell();
 
 		shell.setMinimumSize(new Point(200, 39));
-		shell.setImage(SWTResourceManager.getImage(MendixBackupRestoreTool.class, "/images/backup.png")); //$NON-NLS-1$
+		shell.setImage(SWTResourceManager.getImage(MendixBackupRestoreTool.class, "/images/mendix.png")); //$NON-NLS-1$
 		shell.setSize(1024, 635);
 		shell.setText(Messages.getString("MendixBackupRestoreTool.MendixBackupTool")); //$NON-NLS-1$
 		shell.setLayout(new FormLayout());
@@ -183,20 +183,7 @@ public class MendixBackupRestoreTool {
 
 
 		final List environmentlist = new List(shell, SWT.BORDER);
-		environmentlist.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				btnCreateBackupOn.setEnabled(true);
-				mendixUtil.setCursorWait(shell);
-				try {
-					if (environmentlist.getSelectionIndex() >= 0 && environmentlist.getSelectionIndex() < environmentlist.getItemCount()) {
-						mendixUtil.GetBackupList(applist.getSelectionIndex(), environmentlist.getItem(environmentlist.getSelectionIndex()));
-					}
-				} finally {
-					mendixUtil.setCursorDefault(shell);
-				}				
-			}
-		});
+
 		Label lblEnvironment = new Label(shell, SWT.NONE);
 		FormData fd_environmentlist = new FormData();
 		fd_environmentlist.top = new FormAttachment(applist, 0, SWT.TOP);
@@ -223,7 +210,7 @@ public class MendixBackupRestoreTool {
 		btnSettings.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+
 				SettingsDialog dialog = new SettingsDialog(shell, SWT.APPLICATION_MODAL, mendixUtil);
 				Point pt = display.getCursorLocation();
 				dialog.setLocation(pt);
@@ -329,7 +316,27 @@ public class MendixBackupRestoreTool {
 			}
 		});
 		btnRestoreBackup.setText(Messages.getString("MendixBackupRestoreTool.RestoreBackup")); //$NON-NLS-1$
-		
+
+		environmentlist.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				btnCreateBackupOn.setEnabled(true);
+				if (environmentlist.getSelectionIndex() >= 0 && environmentlist.getSelectionIndex() < environmentlist.getItemCount()) {
+					mendixUtil.setCursorWait(shell);
+					try {
+						if (mendixUtil.GetBackupList(applist.getSelectionIndex(), environmentlist.getItem(environmentlist.getSelectionIndex()))) {
+							backuplist.select(0);
+							btnGetBackup.setEnabled(true);
+							btnRestoreBackup.setEnabled(true);
+							btnDownloadBackup.setEnabled(true);
+						}
+					} finally {
+						mendixUtil.setCursorDefault(shell);
+					}				
+				}
+			}
+		});		
+
 
 		// label Mendix Backup Tool
 		Label lblMendixBackupTool = new Label(shell, SWT.NONE);
@@ -341,10 +348,9 @@ public class MendixBackupRestoreTool {
 		fd_lblMendixBackupTool.top = new FormAttachment(0, 10);
 		fd_lblMendixBackupTool.left = new FormAttachment(0, 10);
 		lblMendixBackupTool.setLayoutData(fd_lblMendixBackupTool);
-		lblMendixBackupTool.setFont(SWTResourceManager.getFont("Segoe UI", 23, SWT.BOLD)); //$NON-NLS-1$
+		lblMendixBackupTool.setFont(SWTResourceManager.getFont("Segoe UI", 23, SWT.BOLD)); 
 		lblMendixBackupTool.setText(Messages.getString("MendixBackupRestoreTool.MendixBackupRestoreTool")); //$NON-NLS-1$
-		
-		
+
 		applist.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -357,7 +363,6 @@ public class MendixBackupRestoreTool {
 				mendixUtil.getEnvironmentList(applist.getSelectionIndex(), environmentlist);
 			}
 		});		
-		
 
 		// label applications
 		FormData fd_lblApplications = new FormData();
