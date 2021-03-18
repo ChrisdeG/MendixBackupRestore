@@ -631,7 +631,8 @@ public class MendixUtil {
 					for (int i = 0; i < backups.length(); i++) {
 						// if a backup is being created createdon is null
 						if (!backups.getJSONObject(i).isNull(CREATED_ON)) {
-							backuplist.add(dt1.format(parser.parse(backups.getJSONObject(i).getString(CREATED_ON))));
+							backuplist.add(dt1.format(new Date(backups.getJSONObject(i).getLong(CREATED_ON))));
+							//backuplist.add(dt1.format(parser.parse(backups.getJSONObject(i).getString(CREATED_ON))));
 						}
 					}
 					return backups.length() > 0;
@@ -674,13 +675,16 @@ public class MendixUtil {
 				if (apps != null) {
 					String appid = "";
 					String backupid = "";
-					Date createdOn = null;
+					//Date createdOn = null;
+					Long createdOn = 0L;
 					try {
 						appid = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString(APP_ID);
 						backupid = backups.getJSONObject(selectedBackupIndex).getString(SNAPSHOT_ID);
 						// if a backup is being created createdon is null
 						if (!backups.getJSONObject(selectedBackupIndex).isNull(CREATED_ON)) {
-							createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
+							//createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
+							createdOn = backups.getJSONObject(selectedBackupIndex).getLong(CREATED_ON);
+
 						}
 					} catch (Exception exp) {
 						consoleWrite("Error getting list " + exp.getMessage());
@@ -713,7 +717,7 @@ public class MendixUtil {
 						return;
 					}
 					dbname = appid + backupid;
-					dbname = getTargetDatabaseName(appid, environment, createdOn);
+					dbname = getTargetDatabaseName(appid, environment, new Date(createdOn));
 				}
 				if (doRestore) {
 					try {
@@ -864,10 +868,11 @@ public class MendixUtil {
 				if (apps != null) {
 					String appid = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString(APP_ID);
 					String backupid = backups.getJSONObject(selectedBackupIndex).getString(SNAPSHOT_ID);
-					Date createdOn = null;
+					Long createdOn = 0L;
 					// if a backup is being created createdon is null
 					if (!backups.getJSONObject(selectedBackupIndex).isNull(CREATED_ON)) {
-						createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
+						createdOn = backups.getJSONObject(selectedBackupIndex).getLong(CREATED_ON);
+						//createdOn = parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
 					}					
 					OkHttpClient client = getClient(60);
 
@@ -897,7 +902,7 @@ public class MendixUtil {
 						return;
 					}
 					dbname = appid + backupid;
-					dbname = getTargetDatabaseName(appid, environment, createdOn);
+					dbname = getTargetDatabaseName(appid, environment, new Date(createdOn));
 				}
 				if (doRestore) {
 					try {
