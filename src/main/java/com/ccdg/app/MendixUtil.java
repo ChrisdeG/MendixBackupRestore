@@ -68,7 +68,7 @@ import okhttp3.Response;
  *
  */
 public class MendixUtil {
-	private static final String MXBACKUPAPIV1 = "https://deploy.mendix.com/api/1/apps/";
+	private static final String MXBACKUPAPIV1 = "https://deploy.mendix.com/api/1/apps";
 	// json fields in api response
 	private static final String CREATED_ON = "CreatedOn";
 	private static final String SNAPSHOT_ID = "SnapshotID";
@@ -472,7 +472,7 @@ public class MendixUtil {
 				if (response.code() == 401) {
 					consoleWrite("Unauthorized, Check your username and api-key ");
 				} else {
-					consoleWrite("Error getting apps:"  + response.code());
+					consoleWrite("Error getting apps: "  + response.code());
 				}
 			}
 		} catch (Exception e) {
@@ -493,7 +493,7 @@ public class MendixUtil {
 			String appid = apps.getJSONObject(AppIndexByListIndex(selectionCount)).getString(APP_ID);
 
 			Request request = new Request.Builder()
-					.url(MXBACKUPAPIV1 + appid +"/environments")
+					.url(MXBACKUPAPIV1 + "/" + appid +"/environments")
 					.get()
 					.addHeader(MENDIX_USER_NAME, apiuser)
 					.addHeader(MENDIX_API_KEY, apikey)
@@ -614,7 +614,7 @@ public class MendixUtil {
 			OkHttpClient client = getClient(60);
 
 			Request request = new Request.Builder()
-					.url(MXBACKUPAPIV1+appid+"/environments/"+environment+"/snapshots")
+					.url(MXBACKUPAPIV1+"/"+appid+"/environments/"+environment+"/snapshots")
 					.get()
 					.addHeader(MENDIX_USER_NAME, apiuser)
 					.addHeader(MENDIX_API_KEY, apikey)
@@ -692,7 +692,7 @@ public class MendixUtil {
 					OkHttpClient client = getClient(60);
 
 					Request request = new Request.Builder()
-							.url(MXBACKUPAPIV1+appid+"/environments/"+environment+"/snapshots/"+backupid)
+							.url(MXBACKUPAPIV1+"/"+appid+"/environments/"+environment+"/snapshots/"+backupid)
 							.get()
 							.addHeader(MENDIX_USER_NAME, apiuser)
 							.addHeader(MENDIX_API_KEY, apikey)
@@ -814,7 +814,7 @@ public class MendixUtil {
 					MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 					RequestBody requestBody = RequestBody.create(JSON, "{\"comment\":\"Backup tool " + apiuser + "\"}");
 					Request request = new Request.Builder()
-							.url(MXBACKUPAPIV1+appid+"/environments/"+environment+"/snapshots/")
+							.url(MXBACKUPAPIV1+"/"+appid+"/environments/"+environment+"/snapshots/")
 							.post(requestBody)
 							.addHeader(MENDIX_USER_NAME, apiuser)
 							.addHeader(MENDIX_API_KEY, apikey)
@@ -877,7 +877,7 @@ public class MendixUtil {
 					OkHttpClient client = getClient(60);
 
 					Request request = new Request.Builder()
-							.url(MXBACKUPAPIV1+appid+"/environments/"+environment+"/snapshots/"+backupid)
+							.url(MXBACKUPAPIV1+"/"+appid+"/environments/"+environment+"/snapshots/"+backupid)
 							.get()
 							.addHeader(MENDIX_USER_NAME, apiuser)
 							.addHeader(MENDIX_API_KEY, apikey)

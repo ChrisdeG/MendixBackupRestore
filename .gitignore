@@ -25,3 +25,4 @@ test/*
 test2/*
 test/widgets/*
 bin/main/*
+log4j.xml.old
