@@ -542,7 +542,12 @@ public class MendixUtil {
 					skip = true;
 				} 
 				// skip sandbox
-				if (apps.getJSONObject(i).getString("Url").contains("mxapps.io")) {
+				if (apps.getJSONObject(i).has("Url")) {
+					if (apps.getJSONObject(i).getString("Url").contains("mxapps.io")) {
+						skip = true;
+					}
+				} else {
+					// skip mobile projects
 					skip = true;
 				}
 				if (!skip) {
@@ -1348,7 +1353,7 @@ public class MendixUtil {
 			prefs.putInt(MRUPREFIX+i, -1);
 		}
 	}
-	
+
 	/**
 	 * Parse the XML date from JSON
 	 * Returns Date
@@ -1366,7 +1371,7 @@ public class MendixUtil {
 		} else {
 			return null;
 		}
-		
+
 	}
 
 }

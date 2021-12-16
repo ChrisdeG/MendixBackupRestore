@@ -142,7 +142,7 @@ public class SettingsDialog extends Dialog {
 		Label lblCopyrightChrisDe = new Label(shlSettings, SWT.NONE);
 		lblCopyrightChrisDe.setToolTipText("");
 		lblCopyrightChrisDe.setBounds(18, 341, 221, 23);
-		lblCopyrightChrisDe.setText("V 3.2.3 - Chris de Gelder");
+		lblCopyrightChrisDe.setText("V 3.2.4 - Chris de Gelder");
 		
 		lblPostgresDirectory = new Label(shlSettings, SWT.NONE);
 		lblPostgresDirectory.setText("Postgres directory (no bin)");

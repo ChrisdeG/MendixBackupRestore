@@ -235,8 +235,8 @@ public class MendixBackupRestoreTool {
 		fd_applist.top = new FormAttachment(0, 102);
 		//fd_lblEnvironment.left = new FormAttachment(btnGetProjectsFrom, 20);
 		FormData fd_btnGetProjectsFrom = new FormData();
-		fd_btnGetProjectsFrom.left = new FormAttachment(applist, -34);
 		fd_btnGetProjectsFrom.bottom = new FormAttachment(applist, -6);
+		fd_btnGetProjectsFrom.left = new FormAttachment(applist, -34);
 		fd_btnGetProjectsFrom.right = new FormAttachment(lblEnvironment, -25);
 		btnGetProjectsFrom.setLayoutData(fd_btnGetProjectsFrom);
 		btnGetProjectsFrom.setImage(SWTResourceManager.getImage(MendixBackupRestoreTool.class, "/images/refresh.png")); 
@@ -342,7 +342,7 @@ public class MendixBackupRestoreTool {
 		fd_btnSettings.left = new FormAttachment(100, -130);
 		FormData fd_lblMendixBackupTool = new FormData();
 		fd_lblMendixBackupTool.bottom = new FormAttachment(0, 68);
-		fd_lblMendixBackupTool.right = new FormAttachment(0, 583);
+		fd_lblMendixBackupTool.right = new FormAttachment(0, 789);
 		fd_lblMendixBackupTool.top = new FormAttachment(0, 10);
 		fd_lblMendixBackupTool.left = new FormAttachment(0, 10);
 		lblMendixBackupTool.setLayoutData(fd_lblMendixBackupTool);
@@ -454,9 +454,9 @@ public class MendixBackupRestoreTool {
 		fd_btnRefreshBackups.left = new FormAttachment(lblBackups, 6);
 		lblBackups.setText(Messages.getString("MendixBackupRestoreTool.Backups")); //$NON-NLS-1$
 		FormData fd_lblBackups = new FormData();
+		fd_lblBackups.top = new FormAttachment(lblMendixBackupTool, 6);
 		fd_lblBackups.right = new FormAttachment(backuplist, -40, SWT.RIGHT);
 		fd_lblBackups.left = new FormAttachment(backuplist, 0, SWT.LEFT);
-		fd_lblBackups.top = new FormAttachment(lblMendixBackupTool, 6);
 		lblBackups.setLayoutData(fd_lblBackups);
 
 		Button MRUbutton = new Button(shell, SWT.NONE);
@@ -487,8 +487,8 @@ public class MendixBackupRestoreTool {
 		});
 		MRUbutton.setImage(SWTResourceManager.getImage(MendixBackupRestoreTool.class, "/javax/swing/plaf/metal/icons/sortDown.png"));
 		FormData fd_MRUbutton = new FormData();
-		fd_MRUbutton.right = new FormAttachment(100, -720);
 		fd_MRUbutton.bottom = new FormAttachment(lblMendixBackupTool, -16);
+		fd_MRUbutton.right = new FormAttachment(100, -720);
 		MRUbutton.setLayoutData(fd_MRUbutton);
 
 		btnCreateBackupOn.addSelectionListener(new SelectionAdapter() {
