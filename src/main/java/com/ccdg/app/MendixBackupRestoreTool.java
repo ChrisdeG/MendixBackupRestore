@@ -208,9 +208,9 @@ public class MendixBackupRestoreTool {
 		btnSettings.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
 				SettingsDialog dialog = new SettingsDialog(shell, SWT.APPLICATION_MODAL, mendixUtil);
 				Point pt = display.getCursorLocation();
+				pt.x = pt.x - dialog.getParent().getBounds().width / 5 * 4;
 				dialog.setLocation(pt);
 				dialog.open();
 			}

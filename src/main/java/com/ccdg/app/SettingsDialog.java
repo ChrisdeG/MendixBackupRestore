@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Combo;
 
 public class SettingsDialog extends Dialog {
 
-	private static final String APIDOCSURL = "https://docs.mendix.com/developerportal/mendix-profile/#api-key";
+	private static final String APIDOCSURL = "https://docs.mendix.com/developerportal/mendix-profile/#api-key"; //$NON-NLS-1$
 	protected Object result;
 	protected Shell shlSettings;
 	private Text apiUserText;
@@ -40,7 +40,7 @@ public class SettingsDialog extends Dialog {
 	private Text PostgresPort;
 	private Combo backupnamingCombo;
 	private Label lblBackupNaming;
-	private Label lblDownloadDirectort;
+	private Label lblDownloadDirectory;
 	private Text downloadDirectory;
 
 	/**
@@ -51,7 +51,7 @@ public class SettingsDialog extends Dialog {
 	 */
 	public SettingsDialog(Shell parent, int style, MendixUtil mendixUtil) {
 		super(parent, style);
-		setText("Setting");
+		setText(Messages.getString("MendixBackupRestoreTool.Settings")); //$NON-NLS-1$
 		this.mendixUtil = mendixUtil;
 	}
 
@@ -80,11 +80,11 @@ public class SettingsDialog extends Dialog {
 		shlSettings.setLocation(location);
 
 		shlSettings.setSize(647, 410);
-		shlSettings.setText("Settings");
+		shlSettings.setText(Messages.getString("SettingsDialog.2")); //$NON-NLS-1$
 		
 		Label lblMenduxApiUser = new Label(shlSettings, SWT.NONE);
 		lblMenduxApiUser.setBounds(18, 39, 135, 21);
-		lblMenduxApiUser.setText("Mendix API User");
+		lblMenduxApiUser.setText(Messages.getString("SettingsDialog.3")); //$NON-NLS-1$
 		
 		apiUserText = new Text(shlSettings, SWT.BORDER);
 		apiUserText.setBounds(207, 36, 394, 24);
@@ -92,18 +92,18 @@ public class SettingsDialog extends Dialog {
 
 		
 		lblBackupNaming = new Label(shlSettings, SWT.NONE);
-		lblBackupNaming.setText("Backup naming");
+		lblBackupNaming.setText(Messages.getString("SettingsDialog.4")); //$NON-NLS-1$
 		lblBackupNaming.setBounds(18, 267, 135, 21);
 
 		
 		apiKeyText = new Text(shlSettings, SWT.BORDER);
-		apiKeyText.setToolTipText("Go to 'my profile' on the mendix site, select the settings icon, API Keys");
+		apiKeyText.setToolTipText(Messages.getString("SettingsDialog.5")); //$NON-NLS-1$
 		apiKeyText.setBounds(207, 68, 394, 24);
 		apiKeyText.setText(mendixUtil.apikey);
 		
 		lblMendixApiKey = new Label(shlSettings, SWT.NONE);
 		lblMendixApiKey.setBounds(18, 71, 135, 21);
-		lblMendixApiKey.setText("Mendix API Key");
+		lblMendixApiKey.setText("Mendix API Key"); //$NON-NLS-1$
 		
 		Link link = new Link(shlSettings, SWT.NONE);
 		link.addSelectionListener(new SelectionAdapter() {
@@ -121,7 +121,7 @@ public class SettingsDialog extends Dialog {
 			}
 		});
 		link.setBounds(207, 100, 394, 21);
-		link.setText("<a>https://docs.mendix.com/developerportal/mendix-profile/#api-key</a>");
+		link.setText("<a>https://docs.mendix.com/developerportal/mendix-profile/#api-key</a>"); //$NON-NLS-1$
 		
 		postgresUsertext = new Text(shlSettings, SWT.BORDER);
 		postgresUsertext.setText(mendixUtil.username);
@@ -132,20 +132,20 @@ public class SettingsDialog extends Dialog {
 		postgresPasswordText.setBounds(207, 164, 394, 24);
 		
 		lblPostgresUser = new Label(shlSettings, SWT.NONE);
-		lblPostgresUser.setText("Postgres user");
+		lblPostgresUser.setText(Messages.getString("SettingsDialog.8")); //$NON-NLS-1$
 		lblPostgresUser.setBounds(18, 135, 97, 21);
 		
 		lblPostgresPassword = new Label(shlSettings, SWT.NONE);
-		lblPostgresPassword.setText("Postgres password");
+		lblPostgresPassword.setText(Messages.getString("SettingsDialog.9")); //$NON-NLS-1$
 		lblPostgresPassword.setBounds(18, 167, 135, 21);
 		
 		Label lblCopyrightChrisDe = new Label(shlSettings, SWT.NONE);
-		lblCopyrightChrisDe.setToolTipText("");
+		lblCopyrightChrisDe.setToolTipText(""); //$NON-NLS-1$
 		lblCopyrightChrisDe.setBounds(18, 341, 221, 23);
-		lblCopyrightChrisDe.setText("V 3.2.4 - Chris de Gelder");
+		lblCopyrightChrisDe.setText("V 3.5.0 - Chris de Gelder");
 		
 		lblPostgresDirectory = new Label(shlSettings, SWT.NONE);
-		lblPostgresDirectory.setText("Postgres directory (no bin)");
+		lblPostgresDirectory.setText(Messages.getString("SettingsDialog.pgdir")); //$NON-NLS-1$
 		lblPostgresDirectory.setBounds(18, 199, 167, 24);
 		
 		PostgresDirectory = new Text(shlSettings, SWT.BORDER);
@@ -155,7 +155,7 @@ public class SettingsDialog extends Dialog {
 		PostgresDirectory.setBounds(207, 196, 394, 24);
 		
 		lblPostgresPort = new Label(shlSettings, SWT.NONE);
-		lblPostgresPort.setText("Postgres port");
+		lblPostgresPort.setText(Messages.getString("MendixBackupRestoreTool.PostgresPort")); //$NON-NLS-1$
 		lblPostgresPort.setBounds(18, 233, 135, 21);
 		
 		PostgresPort = new Text(shlSettings, SWT.BORDER);
@@ -164,17 +164,17 @@ public class SettingsDialog extends Dialog {
 		}
 		PostgresPort.setBounds(207, 230, 394, 24);
 		
-		lblDownloadDirectort = new Label(shlSettings, SWT.NONE);
-		lblDownloadDirectort.setText("Download directory");
-		lblDownloadDirectort.setBounds(18, 299, 135, 21);
+		lblDownloadDirectory = new Label(shlSettings, SWT.NONE);
+		lblDownloadDirectory.setText(Messages.getString("SettingsDialog.14")); //$NON-NLS-1$
+		lblDownloadDirectory.setBounds(18, 299, 135, 21);
 		
 		downloadDirectory = new Text(shlSettings, SWT.BORDER);
 		downloadDirectory.setText(mendixUtil.downloadDirectory);
 		downloadDirectory.setBounds(207, 296, 394, 24);		
 		
 		backupnamingCombo = new Combo(shlSettings, SWT.NONE);
-		backupnamingCombo.setToolTipText("select the way the names of the backups are created.");
-		backupnamingCombo.setItems(new String[] {"", "_{environment}", "_{environment}_{date}", "_{date}_{environment}", "_{date}"});
+		backupnamingCombo.setToolTipText(Messages.getString("MendixBackupRestoreTool.BackupHint")); //$NON-NLS-1$
+		backupnamingCombo.setItems(new String[] {"", "_{environment}", "_{environment}_{date}", "_{date}_{environment}", "_{date}"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		backupnamingCombo.setBounds(207, 264, 394, 24);
 		// set value from prefs
 		backupnamingCombo.select( Arrays.asList(backupnamingCombo.getItems()).indexOf(mendixUtil.backupNaming) );
@@ -193,7 +193,7 @@ public class SettingsDialog extends Dialog {
 			}
 		});
 		btnSave.setBounds(445, 336, 75, 25);
-		btnSave.setText("Save");
+		btnSave.setText(Messages.getString("SettingsDialog.21")); //$NON-NLS-1$
 		
 		btnCancel = new Button(shlSettings, SWT.NONE);
 		btnCancel.addSelectionListener(new SelectionAdapter() {
@@ -203,7 +203,7 @@ public class SettingsDialog extends Dialog {
 			}
 		});
 		btnCancel.setBounds(526, 336, 75, 25);
-		btnCancel.setText("Cancel");
+		btnCancel.setText(Messages.getString("SettingsDialog.Cancel")); //$NON-NLS-1$
 	}
 
 	public void setLocation(Point p) {

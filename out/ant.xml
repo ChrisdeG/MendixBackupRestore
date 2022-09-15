@@ -1,27 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project MendixBackupRestoreTool">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <!--define folder properties-->
-    <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="C:/Users/ChrisdeGelder/eclipse-workspace"/>
-    <property name="dir.jarfile" value="${dir.buildfile}"/>
-    <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/MendixBackupRestoreTool.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="com.mainForm"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-            <fileset dir="C:/Users/ChrisdeGelder/Documents/GitHub/MendixBackupRestore/target/classes"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/com/squareup/okhttp3/okhttp/3.10.0/okhttp-3.10.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/com/squareup/okio/okio/1.14.0/okio-1.14.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/org/apache/commons/commons-compress/1.20/commons-compress-1.20.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.1/jackson-core-2.12.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/org/postgresql/postgresql/42.2.18/postgresql-42.2.18.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/org/json/json/20201115/json-20201115.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/ChrisdeGelder/.m2/repository/org/eclipse/swt/org.eclipse.swt.win32.win32.x86_64/4.3/org.eclipse.swt.win32.win32.x86_64-4.3.jar"/>
-        </jar>
-    </target>
-</project>
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\chris\Documents\Github\MendixBackupRestore\out\MendixBackupRestoreTool.jar</jar>
+  <outfile>C:\Users\chris\Documents\Github\MendixBackupRestore\out\MendixBackupRestoreTool.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>1.8</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+</launch4jConfig>

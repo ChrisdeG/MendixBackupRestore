@@ -26,3 +26,6 @@ test2/*
 test/widgets/*
 bin/main/*
 log4j.xml.old
+out/MendixBackupRestoreTool.exe
+out/MendixBackupRestoreTool.exe
+out/MendixBackupRestoreTool.jar
