@@ -539,16 +539,5 @@ public class MendixBackupRestoreTool {
 		});
 	}
 
-	protected String getEnvironment(Button btnProduction, Button btnAcceptance, Button ButtonTest) {
-		if (btnProduction.getSelection()) {
-			return Messages.getString("MendixBackupRestoreTool.Production"); //$NON-NLS-1$
-		} 		
-		if (btnAcceptance.getSelection()) {
-			return Messages.getString("MendixBackupRestoreTool.Acceptance"); //$NON-NLS-1$
-		}		
-		if (ButtonTest.getSelection()) {
-			return Messages.getString("MendixBackupRestoreTool.Test"); //$NON-NLS-1$
-		}		
-		return null;
-	}
+
 }

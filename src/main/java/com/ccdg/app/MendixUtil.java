@@ -24,6 +24,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -167,11 +168,11 @@ public class MendixUtil {
 				tryDir = tryDirectory(System.getenv("ProgramFiles(X86)") + "/PostgreSQL/"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (!tryDir) {
-				consoleWrite("Postgres not found " + postgresversion); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.PostgresNotFound2") + postgresversion);  //$NON-NLS-1$
 			}
 		} else {
 			consoleWrite(
-					"Postgres not found, This tool only works with postgres. Please set the directory in settings."); //$NON-NLS-1$
+					Messages.getString("MendixUtil.PostgresNotFound"));  //$NON-NLS-1$
 		}
 	}
 
@@ -187,7 +188,7 @@ public class MendixUtil {
 			path = Paths.get(directory + postgresversion);
 		}
 		if (postgresversion.length() > 0) {
-			consoleWrite("Found postgres folder: " + directory + postgresversion); //$NON-NLS-1$
+			consoleWrite(MessageFormat.format(Messages.getString("MendixUtil.FoundPostgresfolder"),  directory, postgresversion));  //$NON-NLS-1$
 			postgresDirectory = directory + postgresversion;
 			return true;
 		} else {
@@ -206,7 +207,7 @@ public class MendixUtil {
 		if (directory != null && !directory.isEmpty()) {
 			Path path = Paths.get(directory);
 			if (Files.isDirectory(path)) {
-				consoleWrite("Found postgres folder: " + directory); //$NON-NLS-1$
+				consoleWrite(MessageFormat.format(Messages.getString("MendixUtil.PostgresFolderFound"), directory));  //$NON-NLS-1$
 				postgresDirectory = directory;
 				return true;
 			} else {
@@ -293,9 +294,9 @@ public class MendixUtil {
 					}
 				}
 			} catch (FileNotFoundException e) {
-				consoleWrite(Messages.getString("MendixUtil.6") + e.getMessage()); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.FileNotFound") + e.getMessage()); //$NON-NLS-1$
 			} catch (IOException e) {
-				consoleWrite(Messages.getString("MendixUtil.7") + e.getMessage()); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.CanNotReadFile") + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -348,7 +349,7 @@ public class MendixUtil {
 		try {
 			prefs.put(MXAPIKEY, encryptString(KEY, apikey));
 		} catch (Exception e) {
-			consoleWrite(Messages.getString("MendixUtil.8") + e.getMessage()); //$NON-NLS-1$
+			consoleWrite(Messages.getString("MendixUtil.ErrorSaveAPI") + e.getMessage()); //$NON-NLS-1$
 		}
 		// after the setting has changed try postgres again.
 		getPostgresfolder();
@@ -384,7 +385,7 @@ public class MendixUtil {
 				connection.close();
 			}
 		} catch (Exception e) {
-			consoleWrite("Error connecting with postgres " + e.getMessage()); //$NON-NLS-1$
+			consoleWrite(Messages.getString("MendixUtil.ErrorConnectPostgres") + e.getMessage());  //$NON-NLS-1$
 		}
 		return result;
 	}
@@ -442,7 +443,7 @@ public class MendixUtil {
 				connection.close();
 			}
 		} catch (Exception e) {
-			consoleWrite(Messages.getString("MendixUtil.9") + e.getMessage()); //$NON-NLS-1$
+			consoleWrite(Messages.getString("MendixUtil.ErrorConnectPostgres") + e.getMessage()); //$NON-NLS-1$
 			e.printStackTrace();
 		}
 		return result;
@@ -485,12 +486,12 @@ public class MendixUtil {
 				if (response.code() == 401) {
 					consoleWrite(Messages.getString("MendixUtil.UserOrKeyInvalid")); //$NON-NLS-1$
 				} else {
-					consoleWrite(Messages.getString("MendixUtil.11") + response.code()); //$NON-NLS-1$
+					consoleWrite(Messages.getString("MendixUtil.ErrorApplications") + response.code()); //$NON-NLS-1$
 				}
 			}
 		} catch (Exception e) {
 			backuplist.removeAll();
-			consoleWrite(Messages.getString("MendixUtil.12") + e.getMessage()); //$NON-NLS-1$
+			consoleWrite(Messages.getString("MendixUtil.ErrorApplications2") + e.getMessage()); //$NON-NLS-1$
 		}
 
 	}
@@ -530,7 +531,7 @@ public class MendixUtil {
 					environmentlist.setItems(sorted.toArray(new String[0]));
 				}
 			} catch (IOException e) {
-				consoleWrite("Error getting environments" + e.getMessage()); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.ErrorGettingEnv") + e.getMessage());  //$NON-NLS-1$
 			}
 		}
 	}
@@ -597,7 +598,7 @@ public class MendixUtil {
 		if (listindex >= 0 && listindex < applist.size()) {
 			String appName = applist.get(listindex);
 			for (int i = 0; i < apps.length(); i++) {
-				if (apps.getJSONObject(i).has("Name") && apps.getJSONObject(i).getString("Name").contentEquals(appName)) { //$NON-NLS-1$
+				if (apps.getJSONObject(i).has("Name") && apps.getJSONObject(i).getString("Name").contentEquals(appName)) { //$NON-NLS-1$ //$NON-NLS-2$
 					return i;
 				}
 			}
@@ -637,10 +638,10 @@ public class MendixUtil {
 					OkHttpClient client = getClient(60);
 					String environmentId = findEnvironmentId(environment);
 
-					String listUrl = MXBACKUPAPIV1 + "/" + appid + "/environments/" + environment + "/snapshots";
+					String listUrl = MXBACKUPAPIV1 + "/" + appid + "/environments/" + environment + "/snapshots"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					if (apiversion == 2) {
-						String projectid = apps.getJSONObject(appIndex).getString("ProjectId");
-						listUrl = MXBACKUPAPIV2 + "/" + projectid + "/environments/" + environmentId + "/snapshots";
+						String projectid = apps.getJSONObject(appIndex).getString("ProjectId"); //$NON-NLS-1$
+						listUrl = MXBACKUPAPIV2 + "/" + projectid + "/environments/" + environmentId + "/snapshots"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 					Request request = new Request.Builder().url(listUrl) // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							.get().addHeader(MENDIX_USER_NAME, apiuser).addHeader(MENDIX_API_KEY, apikey).build();
@@ -654,13 +655,13 @@ public class MendixUtil {
 						// SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 						if (apiversion == 2) {
 							this.backupsv2 = new JSONObject(result);
-							int total = backupsv2.getInt("total");
-							if (backupsv2.has("snapshots")) {
-								JSONArray snapshots = backupsv2.getJSONArray("snapshots");
+							int total = backupsv2.getInt("total"); //$NON-NLS-1$
+							if (backupsv2.has("snapshots")) { //$NON-NLS-1$
+								JSONArray snapshots = backupsv2.getJSONArray("snapshots"); //$NON-NLS-1$
 								for (int i = 0; i < snapshots.length(); i++) {
 									// if a backup is being created created on is null
 									if (snapshots.optJSONObject(i) != null) {
-										final String sDate = snapshots.optJSONObject(i).optString("created_at", null);
+										final String sDate = snapshots.optJSONObject(i).optString("created_at", null); //$NON-NLS-1$
 										if (sDate != null) {
 											// https://stackoverflow.com/questions/2201925/converting-iso-8601-compliant-string-to-java-util-date/60214805#60214805
 											// JAVA 8
@@ -672,7 +673,7 @@ public class MendixUtil {
 									}
 								}
 							} else {
-								consoleWrite("no snapshots found in JSON");
+								consoleWrite(Messages.getString("MendixUtil.NoSnapshotsFound")); //$NON-NLS-1$
 							}
 							return total > 0;
 						} else {
@@ -687,7 +688,7 @@ public class MendixUtil {
 							return backups.length() > 0;
 						}
 					} else {
-						consoleWrite(Messages.getString("MendixUtil.2")); //$NON-NLS-1$
+						consoleWrite(Messages.getString("MendixUtil.ErrorBackups")); //$NON-NLS-1$
 						consoleWrite(result);
 						return false;
 					}
@@ -695,7 +696,7 @@ public class MendixUtil {
 					return false;
 				}
 			} catch (Exception e) {
-				consoleWrite(Messages.getString("MendixUtil.1") + ": " + e.getMessage() + e.getStackTrace().toString()); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.ErrorList") + ": " + e.getMessage() + e.getStackTrace().toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} else {
 			return false;
@@ -712,7 +713,7 @@ public class MendixUtil {
 				GetBackupLinkDownloadAndRestoreV2(selectedAppIndex, selectedBackupIndex, backuplist, environment,
 						environmentId, doDownload, doRestore, includeDocuments);
 			} else {
-				consoleWrite("Can not find environment id");
+				consoleWrite(Messages.getString("MendixUtil.CanNotFindEnvId")); //$NON-NLS-1$
 			}
 		} else {
 			GetBackupLinkDownloadAndRestoreV1(selectedAppIndex, selectedBackupIndex, backuplist, environment,
@@ -726,8 +727,8 @@ public class MendixUtil {
 	private String findEnvironmentId(String environment) {
 		for (int i = 0; i < environments.length(); i++) {
 			JSONObject env = environments.getJSONObject(i);
-			if (env.getString("Mode").contentEquals(environment)) {
-				return (env.getString("EnvironmentId"));
+			if (env.getString("Mode").contentEquals(environment)) { //$NON-NLS-1$
+				return (env.getString("EnvironmentId")); //$NON-NLS-1$
 			}
 		}
 		return null;
@@ -773,12 +774,12 @@ public class MendixUtil {
 
 						}
 					} catch (Exception exp) {
-						consoleWrite("Error getting list " + exp.getMessage()); //$NON-NLS-1$
+						consoleWrite(Messages.getString("MendixUtil.ErrorGetBackupList") + exp.getMessage());  //$NON-NLS-1$
 					}
 					OkHttpClient client = getClient(60);
 
-					final String backupUrl = MXBACKUPAPIV1 + "/" + appid + "/environments/" + environment
-							+ "/snapshots/" + backupid;
+					final String backupUrl = MXBACKUPAPIV1 + "/" + appid + "/environments/" + environment //$NON-NLS-1$ //$NON-NLS-2$
+							+ "/snapshots/" + backupid; //$NON-NLS-1$
 					Request request = new Request.Builder().url(backupUrl) // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							.get().addHeader(MENDIX_USER_NAME, apiuser).addHeader(MENDIX_API_KEY, apikey).build();
 
@@ -833,13 +834,13 @@ public class MendixUtil {
 								+ "\""; //$NON-NLS-1$
 						runCommand(commandlist, true);
 						// restore the database
-						setStyledText("Restoring database"); //$NON-NLS-1$
+						setStyledText(Messages.getString("MendixUtil.RestoringDB"));  //$NON-NLS-1$
 						String command = "\"" + postgresDirectory + "/bin/pg_restore.exe\" --host localhost --port " //$NON-NLS-1$ //$NON-NLS-2$
 								+ postgresPort + " --jobs 2 --username \"" + username + "\" --dbname \"" + dbname //$NON-NLS-1$ //$NON-NLS-2$
 								+ "\" --no-owner --no-password  --verbose \"" + dbFilename + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 						int exitCode2 = runCommand(command, false);
 						if (exitCode2 == 0) {
-							consoleWrite("Database restored as " + dbname); //$NON-NLS-1$
+							consoleWrite(Messages.getString("MendixUtil.DBRestored") + dbname);  //$NON-NLS-1$
 							if (includeDocuments) {
 								consoleWrite(Messages.getString("MendixUtil.setPath")); //$NON-NLS-1$
 								consoleWrite(extractDirectory + File.separator + "tree"); //$NON-NLS-1$
@@ -886,16 +887,16 @@ public class MendixUtil {
 					// Date createdOn = null;
 					Date createdOn = null;
 					try {
-						projectId = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString("ProjectId");
-						snapshotId = backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex)
-								.getString("snapshot_id");
+						projectId = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString("ProjectId"); //$NON-NLS-1$
+						snapshotId = backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex) //$NON-NLS-1$
+								.getString("snapshot_id"); //$NON-NLS-1$
 						// if a backup is being created createdon is null
-						if (!backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex)
-								.isNull("created_at")) {
+						if (!backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex) //$NON-NLS-1$
+								.isNull("created_at")) { //$NON-NLS-1$
 							// createdOn =
 							// parseJSONDate(backups.getJSONObject(selectedBackupIndex).getString(CREATED_ON));
-							String sDate = backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex)
-									.getString("created_at");
+							String sDate = backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex) //$NON-NLS-1$
+									.getString("created_at"); //$NON-NLS-1$
 							createdOn = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(sDate)));
 
 						}
@@ -907,12 +908,12 @@ public class MendixUtil {
 					RequestBody formBody = new FormBody.Builder().build();
 					// request an archive
 					String scope = includeDocuments ? "files_and_database" : "database_only"; //$NON-NLS-1$ //$NON-NLS-2$
-					final String backupUrl = MXBACKUPAPIV2 + "/" + projectId + "/environments/" + environmentId
-							+ "/snapshots/" + snapshotId + "/archives?data_type=" + scope;
+					final String backupUrl = MXBACKUPAPIV2 + "/" + projectId + "/environments/" + environmentId //$NON-NLS-1$ //$NON-NLS-2$
+							+ "/snapshots/" + snapshotId + "/archives?data_type=" + scope; //$NON-NLS-1$ //$NON-NLS-2$
 					Request request = new Request.Builder().url(backupUrl) // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							.post(formBody).addHeader(MENDIX_USER_NAME, apiuser).addHeader(MENDIX_API_KEY, apikey)
 							.build();
-					String result = "";
+					String result = ""; //$NON-NLS-1$
 					try {
 						Response response = client.newCall(request).execute();
 						result = response.body().string();
@@ -920,7 +921,7 @@ public class MendixUtil {
 							// String scope = includeDocuments ? "DatabaseAndFiles" : "DatabaseOnly";
 							// //$NON-NLS-1$ //$NON-NLS-2$
 							// String url = new JSONObject(result).getString(scope);
-							String archiveId = new JSONObject(result).getString("archive_id");
+							String archiveId = new JSONObject(result).getString("archive_id"); //$NON-NLS-1$
 							String saveDir = downloadDirectory;
 							filename = downloadFileV2(appId, projectId, environment, environmentId, snapshotId,
 									archiveId, saveDir, doDownload, includeDocuments);
@@ -958,7 +959,7 @@ public class MendixUtil {
 								+ "\"\"\""; //$NON-NLS-1$
 						int exitCode = runCommand(commandcreate, false);
 						if (exitCode == 0) {
-							consoleWrite("database created"); //$NON-NLS-1$
+							consoleWrite(Messages.getString("MendixUtil.DBCreated"));  //$NON-NLS-1$
 						} else {
 							return;
 						}
@@ -974,7 +975,7 @@ public class MendixUtil {
 								+ "\" --no-owner --no-password  --verbose \"" + dbFilename + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 						int exitCode2 = runCommand(command, false);
 						if (exitCode2 == 0) {
-							consoleWrite("Database restored as " + dbname); //$NON-NLS-1$
+							consoleWrite(Messages.getString("MendixUtil.DatabaseRestored") + dbname);  //$NON-NLS-1$
 							if (includeDocuments) {
 								consoleWrite(Messages.getString("MendixUtil.setPath")); //$NON-NLS-1$
 								consoleWrite(extractDirectory + File.separator + "tree"); //$NON-NLS-1$
@@ -1051,7 +1052,7 @@ public class MendixUtil {
 						Response response = client.newCall(request).execute();
 						String result = response.body().string();
 						if (response.isSuccessful()) {
-							consoleWrite(Messages.getString("MendixUtil.5")); //$NON-NLS-1$
+							consoleWrite(Messages.getString("MendixUtil.BackupCreated")); //$NON-NLS-1$
 							consoleWrite(result);
 							// add to internal list and ui.
 							JSONObject addbackup = new JSONObject(result);
@@ -1064,11 +1065,11 @@ public class MendixUtil {
 							});
 							backups.put(addbackup);
 						} else {
-							consoleWrite(Messages.getString("MendixUtil.4")); //$NON-NLS-1$
+							consoleWrite(Messages.getString("MendixUtil.ErrorCreate")); //$NON-NLS-1$
 							consoleWrite(result);
 						}
 					} catch (IOException exp) {
-						consoleWrite(Messages.getString("MendixUtil.3") + ": " + exp.getMessage()); //$NON-NLS-1$
+						consoleWrite(Messages.getString("MendixUtil.ErrorList") + ": " + exp.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			};
@@ -1370,13 +1371,13 @@ public class MendixUtil {
 			int responseCode = httpConn.getResponseCode();
 			int retrycount = 0;
 			while (responseCode == 500 && retrycount++ < MaxRetry) {
-				consoleWrite("Backup is not ready in Mendix cloud, will retry in 30 seconds, please wait");
+				consoleWrite(Messages.getString("MendixUtil.BackupNotReady2")); //$NON-NLS-1$
 				TimeUnit.SECONDS.sleep(30);
 				httpConn = (HttpURLConnection) url.openConnection();
 				responseCode = httpConn.getResponseCode();
 			}
 			if (responseCode == 500 && retrycount >= 10) {
-				consoleWrite("Backup retry failed");
+				consoleWrite(Messages.getString("MendixUtil.BackupRetryFailed")); //$NON-NLS-1$
 			}
 
 			// always check HTTP response code first
@@ -1426,7 +1427,7 @@ public class MendixUtil {
 									prog = 1000 * totalbytesRead / maxCount;
 								}
 								setProgress(prog.intValue());
-								setStyledText(totalbytesRead / (1024 * 1024) + " MB read"); //$NON-NLS-1$
+								setStyledText(totalbytesRead / (1024 * 1024) + Messages.getString("MendixUtil.MBRead"));  //$NON-NLS-1$
 							}
 						}
 						// store for next time progress bar
@@ -1451,7 +1452,7 @@ public class MendixUtil {
 				setProgress(0);
 				result = saveFilePath;
 			} else {
-				consoleWrite("No file to download. Server replied HTTP code: " + responseCode); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.NoFileDownloadHttpError") + responseCode);  //$NON-NLS-1$
 			}
 			httpConn.disconnect();
 		} catch (MalformedURLException e) {
@@ -1493,8 +1494,8 @@ public class MendixUtil {
 		try {
 			// URL:
 			// https://deploy.mendix.com/api/v2/apps/<ProjectId>/environments/<EnvironmentId>/snapshots/<SnapshotId>/archives/<ArchiveId>
-			final String statusUrl = MXBACKUPAPIV2 + "/" + projectId + "/environments/" + environmentId + "/snapshots/"
-					+ snapshotId + "/archives/" + archiveId;
+			final String statusUrl = MXBACKUPAPIV2 + "/" + projectId + "/environments/" + environmentId + "/snapshots/" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ snapshotId + "/archives/" + archiveId; //$NON-NLS-1$
 
 			Preferences prefs = getPreferences();
 
@@ -1503,7 +1504,7 @@ public class MendixUtil {
 			if (url != null) {
 				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 				try {
-					String fileName = "mendixbackup-" + appid + "-" + environment + "-" + archiveId + ".backup";
+					String fileName = "mendixbackup-" + appid + "-" + environment + "-" + archiveId + ".backup"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					String ext = includeDocuments ? "-doc" : ""; //$NON-NLS-1$ //$NON-NLS-2$
 					Long maxCount = prefs.getLong(SIZEPREFIX + appid + ext, 0);
 					setProgressMax(1000);
@@ -1562,7 +1563,7 @@ public class MendixUtil {
 					httpConn.disconnect();
 				}
 			} else {
-				consoleWrite("No file to download. Server replied HTTP code: "/* TODO CDG + responseCode */); //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.NoURL"));  //$NON-NLS-1$
 			}
 		} catch (MalformedURLException e) {
 			consoleWrite("Error " + e.getMessage()); //$NON-NLS-1$
@@ -1593,11 +1594,11 @@ public class MendixUtil {
 			response = client.newCall(request).execute();
 			String statusresult = response.body().string();
 			JSONObject resultJson = new JSONObject(statusresult);
-			String status = resultJson.getString("state");
+			String status = resultJson.getString("state"); //$NON-NLS-1$
 			consoleWrite(resultJson.toString());
 			int timeout = 1;
-			while ((status.contentEquals("queued") || status.contentEquals("running")) && retrycount++ < MaxRetry) {
-				consoleWrite("Backup is not ready in Mendix cloud, will retry in " + timeout + " seconds, please wait");
+			while ((status.contentEquals("queued") || status.contentEquals("running")) && retrycount++ < MaxRetry) { //$NON-NLS-1$ //$NON-NLS-2$
+				consoleWrite(MessageFormat.format(Messages.getString("MendixUtil.NotReadyRetry"), timeout)); //$NON-NLS-1$
 				TimeUnit.SECONDS.sleep(timeout);
 				if (timeout < 40) {
 					timeout *= 2;
@@ -1605,14 +1606,14 @@ public class MendixUtil {
 				response = client.newCall(request).execute();
 				statusresult = response.body().string();
 				resultJson = new JSONObject(statusresult);
-				status = resultJson.getString("state");
+				status = resultJson.getString("state"); //$NON-NLS-1$
 				consoleWrite(resultJson.toString());
 			}
-			if (status.contentEquals("failed") || retrycount >= 10) {
-				consoleWrite("Backup retry failed");
+			if (status.contentEquals("failed") || retrycount >= 10) { //$NON-NLS-1$
+				consoleWrite(Messages.getString("MendixUtil.RetryFailed")); //$NON-NLS-1$
 			}
-			if (resultJson.has("url")) {
-				URL url = new URL(resultJson.getString("url"));
+			if (resultJson.has("url")) { //$NON-NLS-1$
+				URL url = new URL(resultJson.getString("url")); //$NON-NLS-1$
 				return url;
 			} else {
 				return null;

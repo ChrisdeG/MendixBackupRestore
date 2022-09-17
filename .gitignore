@@ -11,11 +11,9 @@ test/.project
 *.class
 *.lock
 .idea/
-
 dist/
 dev/deployment
 npm-debug.log
-
 node_modules/
 .editorconfig
 *DS_Store*
@@ -26,6 +24,6 @@ test2/*
 test/widgets/*
 bin/main/*
 log4j.xml.old
-out/MendixBackupRestoreTool.exe
-out/MendixBackupRestoreTool.exe
-out/MendixBackupRestoreTool.jar
+MendixBackupRestoreTool.exe
+MendixBackupRestoreTool.jar
+out/*

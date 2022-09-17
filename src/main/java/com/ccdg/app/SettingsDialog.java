@@ -80,11 +80,11 @@ public class SettingsDialog extends Dialog {
 		shlSettings.setLocation(location);
 
 		shlSettings.setSize(647, 410);
-		shlSettings.setText(Messages.getString("SettingsDialog.2")); //$NON-NLS-1$
+		shlSettings.setText(Messages.getString("SettingsDialog.Settings")); //$NON-NLS-1$
 		
 		Label lblMenduxApiUser = new Label(shlSettings, SWT.NONE);
 		lblMenduxApiUser.setBounds(18, 39, 135, 21);
-		lblMenduxApiUser.setText(Messages.getString("SettingsDialog.3")); //$NON-NLS-1$
+		lblMenduxApiUser.setText(Messages.getString("SettingsDialog.MendixApiUser")); //$NON-NLS-1$
 		
 		apiUserText = new Text(shlSettings, SWT.BORDER);
 		apiUserText.setBounds(207, 36, 394, 24);
@@ -92,12 +92,12 @@ public class SettingsDialog extends Dialog {
 
 		
 		lblBackupNaming = new Label(shlSettings, SWT.NONE);
-		lblBackupNaming.setText(Messages.getString("SettingsDialog.4")); //$NON-NLS-1$
+		lblBackupNaming.setText(Messages.getString("SettingsDialog.BackupNaming")); //$NON-NLS-1$
 		lblBackupNaming.setBounds(18, 267, 135, 21);
 
 		
 		apiKeyText = new Text(shlSettings, SWT.BORDER);
-		apiKeyText.setToolTipText(Messages.getString("SettingsDialog.5")); //$NON-NLS-1$
+		apiKeyText.setToolTipText(Messages.getString("SettingsDialog.Instructions")); //$NON-NLS-1$
 		apiKeyText.setBounds(207, 68, 394, 24);
 		apiKeyText.setText(mendixUtil.apikey);
 		
@@ -132,17 +132,17 @@ public class SettingsDialog extends Dialog {
 		postgresPasswordText.setBounds(207, 164, 394, 24);
 		
 		lblPostgresUser = new Label(shlSettings, SWT.NONE);
-		lblPostgresUser.setText(Messages.getString("SettingsDialog.8")); //$NON-NLS-1$
+		lblPostgresUser.setText(Messages.getString("SettingsDialog.PostgresUser")); //$NON-NLS-1$
 		lblPostgresUser.setBounds(18, 135, 97, 21);
 		
 		lblPostgresPassword = new Label(shlSettings, SWT.NONE);
-		lblPostgresPassword.setText(Messages.getString("SettingsDialog.9")); //$NON-NLS-1$
+		lblPostgresPassword.setText(Messages.getString("SettingsDialog.Password")); //$NON-NLS-1$
 		lblPostgresPassword.setBounds(18, 167, 135, 21);
 		
 		Label lblCopyrightChrisDe = new Label(shlSettings, SWT.NONE);
 		lblCopyrightChrisDe.setToolTipText(""); //$NON-NLS-1$
 		lblCopyrightChrisDe.setBounds(18, 341, 221, 23);
-		lblCopyrightChrisDe.setText("V 3.5.0 - Chris de Gelder");
+		lblCopyrightChrisDe.setText("V 3.5.1 - Chris de Gelder");
 		
 		lblPostgresDirectory = new Label(shlSettings, SWT.NONE);
 		lblPostgresDirectory.setText(Messages.getString("SettingsDialog.pgdir")); //$NON-NLS-1$
@@ -165,7 +165,7 @@ public class SettingsDialog extends Dialog {
 		PostgresPort.setBounds(207, 230, 394, 24);
 		
 		lblDownloadDirectory = new Label(shlSettings, SWT.NONE);
-		lblDownloadDirectory.setText(Messages.getString("SettingsDialog.14")); //$NON-NLS-1$
+		lblDownloadDirectory.setText(Messages.getString("SettingsDialog.DownloadDir")); //$NON-NLS-1$
 		lblDownloadDirectory.setBounds(18, 299, 135, 21);
 		
 		downloadDirectory = new Text(shlSettings, SWT.BORDER);
@@ -193,7 +193,7 @@ public class SettingsDialog extends Dialog {
 			}
 		});
 		btnSave.setBounds(445, 336, 75, 25);
-		btnSave.setText(Messages.getString("SettingsDialog.21")); //$NON-NLS-1$
+		btnSave.setText(Messages.getString("SettingsDialog.Save")); //$NON-NLS-1$
 		
 		btnCancel = new Button(shlSettings, SWT.NONE);
 		btnCancel.addSelectionListener(new SelectionAdapter() {
