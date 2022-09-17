@@ -3,6 +3,9 @@ Mendix cloud client to download and restore database backups
 
 Java SWT application to automate database download and restore to postgres.
 
+![alt text](http://www.lowcodeconnect.nl/Screenshot 2022-09-17 123656.jpg)
+
+
 ## Pre requirements
 
 * A mendix API key
