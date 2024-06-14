@@ -116,7 +116,7 @@ public class MendixBackupRestoreTool {
 		styledText.setLayoutData(fd_styledText);
 
 
-		// progressbar
+		// progress bar
 		ProgressBar progressBar = new ProgressBar(shell, SWT.NONE);
 		fd_styledText.bottom = new FormAttachment(100, -36);
 		FormData fd_progressBar = new FormData();
@@ -396,7 +396,7 @@ public class MendixBackupRestoreTool {
 		btnStories.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mendixUtil.OpenBrowser("https://sprintr.home.mendix.com/link/capture/", applist.getSelectionIndex()); //$NON-NLS-1$
+				mendixUtil.OpenBrowser("https://epics.mendix.com/link/epics/", applist.getSelectionIndex()); //$NON-NLS-1$
 
 			}
 		});
@@ -442,13 +442,6 @@ public class MendixBackupRestoreTool {
 		fd_btnTeamServer.right = new FormAttachment(100, -14);
 		fd_btnTeamServer.top = new FormAttachment(btnStories, 6);
 		btnTeamServer.setLayoutData(fd_btnTeamServer);
-
-		Label lblGoTo = new Label(shell, SWT.NONE);
-		lblGoTo.setText(Messages.getString("MendixBackupRestoreTool.Goto")); //$NON-NLS-1$
-		FormData fd_lblGoTo = new FormData();
-		fd_lblGoTo.right = new FormAttachment(100, -18);
-		fd_lblGoTo.top = new FormAttachment(0, 74);
-		lblGoTo.setLayoutData(fd_lblGoTo);
 
 		Label lblBackups = new Label(shell, SWT.NONE);
 		fd_btnRefreshBackups.left = new FormAttachment(lblBackups, 6);

@@ -20,19 +20,20 @@ import org.eclipse.swt.widgets.Combo;
 
 public class SettingsDialog extends Dialog {
 
-	private static final String APIDOCSURL = "https://docs.mendix.com/developerportal/mendix-profile/#api-key"; //$NON-NLS-1$
+	private static final String APIDOCSURL = "https://docs.mendix.com/community-tools/mendix-profile/user-settings/#profile-api-keys"; //$NON-NLS-1$
 	protected Object result;
 	protected Shell shlSettings;
 	private Text apiUserText;
 	private Text apiKeyText;
-	private Label lblMendixApiKey;
+	
 	private Button btnSave;
 	private Button btnCancel;
 	private MendixUtil mendixUtil;
 	private Point location;
 	private Text postgresUsertext;
 	private Text postgresPasswordText;
-	private Label lblPostgresUser;
+	private  Label lblPostgresUser;
+	private  Label lblMendixApiKey;
 	private Label lblPostgresPassword;
 	private Label lblPostgresDirectory;
 	private Text PostgresDirectory;
@@ -76,6 +77,7 @@ public class SettingsDialog extends Dialog {
 	 * Create contents of the dialog.
 	 */
 	private void createContents() {
+
 		shlSettings = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shlSettings.setLocation(location);
 
@@ -113,15 +115,13 @@ public class SettingsDialog extends Dialog {
 				try {
 					uri = new java.net.URI(APIDOCSURL);
 					java.awt.Desktop.getDesktop().browse(uri);
-				} catch (URISyntaxException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
+				} catch (URISyntaxException | IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
 		link.setBounds(207, 100, 394, 21);
-		link.setText("<a>https://docs.mendix.com/developerportal/mendix-profile/#api-key</a>"); //$NON-NLS-1$
+		link.setText(Messages.getString("SettingsDialog.link.text")); //$NON-NLS-1$ //$NON-NLS-1$
 		
 		postgresUsertext = new Text(shlSettings, SWT.BORDER);
 		postgresUsertext.setText(mendixUtil.username);
@@ -141,8 +141,8 @@ public class SettingsDialog extends Dialog {
 		
 		Label lblCopyrightChrisDe = new Label(shlSettings, SWT.NONE);
 		lblCopyrightChrisDe.setToolTipText(""); //$NON-NLS-1$
-		lblCopyrightChrisDe.setBounds(18, 341, 221, 23);
-		lblCopyrightChrisDe.setText("V 3.5.1 - Chris de Gelder");
+		lblCopyrightChrisDe.setBounds(18, 341, 257, 23);
+		lblCopyrightChrisDe.setText(Messages.getString("SettingsDialog.lblCopyrightChrisDe.text")); //$NON-NLS-1$
 		
 		lblPostgresDirectory = new Label(shlSettings, SWT.NONE);
 		lblPostgresDirectory.setText(Messages.getString("SettingsDialog.pgdir")); //$NON-NLS-1$
