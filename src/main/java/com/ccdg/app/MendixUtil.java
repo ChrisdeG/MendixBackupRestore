@@ -397,7 +397,7 @@ public class MendixUtil {
 	 * @param appid       application id
 	 * @param environment environment like production, acceptance
 	 * @param createdOn   Date of the backup
-	 * @return Unique databasename
+	 * @return Unique database name
 	 */
 	public String getTargetDatabaseName(String appid, String environment, Date createdOn) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
@@ -888,9 +888,10 @@ public class MendixUtil {
 					Date createdOn = null;
 					try {
 						projectId = apps.getJSONObject(AppIndexByListIndex(selectedAppIndex)).getString("ProjectId"); //$NON-NLS-1$
-						snapshotId = backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex) //$NON-NLS-1$
+						snapshotId = backupsv2.getJSONArray("snapshots")
+								.getJSONObject(selectedBackupIndex) //$NON-NLS-1$
 								.getString("snapshot_id"); //$NON-NLS-1$
-						// if a backup is being created createdon is null
+						// if a backup is being created created on is null
 						if (!backupsv2.getJSONArray("snapshots").getJSONObject(selectedBackupIndex) //$NON-NLS-1$
 								.isNull("created_at")) { //$NON-NLS-1$
 							// createdOn =
@@ -910,8 +911,11 @@ public class MendixUtil {
 					String scope = includeDocuments ? "files_and_database" : "database_only"; //$NON-NLS-1$ //$NON-NLS-2$
 					final String backupUrl = MXBACKUPAPIV2 + "/" + projectId + "/environments/" + environmentId //$NON-NLS-1$ //$NON-NLS-2$
 							+ "/snapshots/" + snapshotId + "/archives?data_type=" + scope; //$NON-NLS-1$ //$NON-NLS-2$
-					Request request = new Request.Builder().url(backupUrl) // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							.post(formBody).addHeader(MENDIX_USER_NAME, apiuser).addHeader(MENDIX_API_KEY, apikey)
+					Request request = new Request.Builder()
+							.url(backupUrl) // $NON-NLS-1$ 
+							.post(formBody)
+							.addHeader(MENDIX_USER_NAME, apiuser) //$NON-NLS-2$ 
+							.addHeader(MENDIX_API_KEY, apikey) //$NON-NLS-3$
 							.build();
 					String result = ""; //$NON-NLS-1$
 					try {
@@ -1298,7 +1302,6 @@ public class MendixUtil {
 				styledText.setText(message);
 			}
 		});
-
 	}
 
 	/**

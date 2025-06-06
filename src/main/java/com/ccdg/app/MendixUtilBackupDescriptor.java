@@ -77,6 +77,6 @@ public class MendixUtilBackupDescriptor
 	    @Override
 	    public String toString()
 	    {
-	        return "ClassPojo [SnapshotID = "+SnapshotID+", ExpiresOn = "+ExpiresOn+", State = "+State+", ModelVersion = "+ModelVersion+", CreatedOn = "+CreatedOn+", Comment = "+Comment+"]";
+	        return "BackupDescriptor [SnapshotID = "+SnapshotID+", ExpiresOn = "+ExpiresOn+", State = "+State+", ModelVersion = "+ModelVersion+", CreatedOn = "+CreatedOn+", Comment = "+Comment+"]";
 	    }
 	}
